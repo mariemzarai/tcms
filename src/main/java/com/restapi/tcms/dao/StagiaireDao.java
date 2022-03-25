@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 public class StagiaireDao {
     @Autowired
-    StagiaireRepository stagiaireRepository;
+    private StagiaireRepository stagiaireRepository;
 
     public Stagiaire create(Stagiaire stagiaire) {
         if(!stagiaireRepository.existsByEmail(stagiaire.getEmail()))

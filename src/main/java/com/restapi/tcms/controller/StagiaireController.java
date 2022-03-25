@@ -36,7 +36,7 @@ public class StagiaireController {
         return stagiaireDao.getAll();
     }
 
-    @DeleteMapping(path = "supprimer/{id}")
+    @DeleteMapping(path = "/supprimer/{id}")
     public  ResponseEntity<String> deleteStagiare(@PathVariable("id") Long id){
         try {
             stagiaireDao.delete(id);

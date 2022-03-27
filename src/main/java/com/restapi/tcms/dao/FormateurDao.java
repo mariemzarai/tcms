@@ -1,10 +1,8 @@
 package com.restapi.tcms.dao;
 import com.restapi.tcms.model.Formateur;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import com.restapi.tcms.repository.FormateurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -16,7 +14,7 @@ import java.util.List;
 public class FormateurDao {
 
 
-    private  final  FormateurRepository formateurRepository ;
+    private  final FormateurRepository formateurRepository ;
     @Autowired
   public FormateurDao( FormateurRepository formateurRepository){this.formateurRepository=formateurRepository;}
 

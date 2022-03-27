@@ -1,13 +1,13 @@
 package com.restapi.tcms.dao;
 
 import com.restapi.tcms.model.Stagiaire;
+import com.restapi.tcms.repository.StagiaireRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 @Component

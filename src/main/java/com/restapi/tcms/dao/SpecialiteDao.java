@@ -1,7 +1,7 @@
 package com.restapi.tcms.dao;
 
 import com.restapi.tcms.model.Specialite;
-import com.restapi.tcms.model.Stagiaire;
+import com.restapi.tcms.repository.SpecialiteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;

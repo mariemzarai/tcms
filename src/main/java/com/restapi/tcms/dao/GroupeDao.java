@@ -1,5 +1,6 @@
 package com.restapi.tcms.dao;
 import com.restapi.tcms.model.Groupe;
+import com.restapi.tcms.repository.GroupeRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;

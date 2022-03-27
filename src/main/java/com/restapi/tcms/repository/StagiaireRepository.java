@@ -1,4 +1,4 @@
-package com.restapi.tcms.dao;
+package com.restapi.tcms.repository;
 
 import com.restapi.tcms.model.Stagiaire;
 import org.springframework.data.jpa.repository.JpaRepository;

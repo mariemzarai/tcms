@@ -1,6 +1,8 @@
 package com.restapi.tcms.dao;
 
 import com.restapi.tcms.model.Matiere;
+import com.restapi.tcms.repository.MatiereRepository;
+import com.restapi.tcms.repository.SpecialiteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;

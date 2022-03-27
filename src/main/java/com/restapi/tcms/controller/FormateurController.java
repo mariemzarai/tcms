@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 @RestController
-@RequestMapping("path= /formateur")
+@RequestMapping(path="/formateur")
 public class FormateurController {
 
 
@@ -20,9 +20,9 @@ public class FormateurController {
     public FormateurController(FormateurDao formateurDao){this.formateurDao=formateurDao;}
 
     @PostMapping(path = "/ajouter", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<Object> create(@RequestBody Formateur Formateur){
+    public ResponseEntity<Object> create(@RequestBody Formateur formateur){
         try {
-            return new ResponseEntity<>(formateurDao.create(Formateur), HttpStatus.CREATED);
+            return new ResponseEntity<>(formateurDao.create(formateur), HttpStatus.CREATED);
         } catch (DataIntegrityViolationException e) {
             return ResponseEntity.badRequest().body(e.toString());
         }

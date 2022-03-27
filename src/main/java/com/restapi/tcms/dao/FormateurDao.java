@@ -25,11 +25,11 @@ public class FormateurDao {
     }
 
     public  Formateur getById(Long id) {
-        return  formateurRepository.getById(id) ;
+        return  formateurRepository.findById(id).orElseThrow(()->new EntityNotFoundException("Formateur avec id " + id + " n'existe pas."));
     }
 
     public Formateur create(Formateur  formateur) {
-        if(!formateurRepository.existsByEmail( formateur.getEmail()))
+        if(!formateurRepository.existsByEmail(formateur.getEmail()))
             return formateurRepository.save(formateur);
         else
             throw new DataIntegrityViolationException("email taken");
@@ -66,10 +66,10 @@ public class FormateurDao {
             f.setNum_tel(num_tel);
         }
         if(email2 != null && email2.length() > 0){
-            f.setEmail2(f.getEmail2());
+            f.setEmail2(email2);
         }
         if(profession != null && profession.length() > 0){
-            f.setProfession(f.getProfession());
+            f.setProfession(profession);
         }
 
         return f;

@@ -20,7 +20,7 @@ public class GroupeDao {
     }
 
     public  Groupe getById(Long id) {
-        return  groupeRepository.getById(id) ;
+        return  groupeRepository.findById(id).orElseThrow(()->new EntityNotFoundException("groupe avec id "+id+" n'existe pas"));
     }
 
     public Groupe  create( Groupe groupe) {

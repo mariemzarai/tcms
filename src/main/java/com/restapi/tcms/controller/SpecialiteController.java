@@ -46,4 +46,20 @@ public class SpecialiteController {
             return ResponseEntity.badRequest().body("Entity not found");
         }
     }
+
+    @GetMapping(path = "/{id}")
+    public  ResponseEntity<Specialite> getSpecialite(@PathVariable("id") Integer id){
+        try {
+            return ResponseEntity.ok(specialiteDao.getById(id));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+    }
+
+    @GetMapping(path = "/{id}/stagiaires")
+    public List<Stagiaire> getStagiaires(@PathVariable("id") Integer id){
+        Specialite specialite = specialiteDao.getById(id);
+        return  specialite.getListeStagiaires();
+    }
 }

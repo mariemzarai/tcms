@@ -37,7 +37,7 @@ public class StagiaireController {
     }
 
     @DeleteMapping(path = "/supprimer/{id}")
-    public  ResponseEntity<String> deleteStagiare(@PathVariable("id") Long id){
+    public  ResponseEntity<String> delete(@PathVariable("id") Long id){
         try {
             stagiaireDao.delete(id);
             return  ResponseEntity.ok("Deleted successfully");
@@ -46,18 +46,17 @@ public class StagiaireController {
         }
     }
 
-    @GetMapping(path = "/{id}")
+    @GetMapping(path = "/{id}", produces = "application/json")
     public  ResponseEntity<Stagiaire> getStagiaire(@PathVariable("id") Long id){
         try {
             return ResponseEntity.ok(stagiaireDao.getById(id));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
         }
     }
 
     @PutMapping(path = "/modifier/{id}")
-    public Stagiaire updateStagiaire(
+    public ResponseEntity<Stagiaire> updateStagiaire(
             @PathVariable("id") Long id,
             @RequestParam(required = false) String nom,
             @RequestParam(required = false) String prenom,
@@ -67,6 +66,10 @@ public class StagiaireController {
             @RequestParam(required = false) String nom_parent,
             @RequestParam(required = false) String num_tel_parent,
             @RequestParam(required = false) String adresse_postale){
-        return stagiaireDao.update(id, nom, prenom, sexe, email, num_tel, nom_parent, num_tel_parent, adresse_postale);
+        try {
+            return ResponseEntity.ok(stagiaireDao.update(id, nom, prenom, sexe, email, num_tel, nom_parent, num_tel_parent, adresse_postale));
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

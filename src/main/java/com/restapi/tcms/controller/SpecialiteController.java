@@ -1,6 +1,7 @@
 package com.restapi.tcms.controller;
 
 import com.restapi.tcms.dao.SpecialiteDao;
+import com.restapi.tcms.model.Matiere;
 import com.restapi.tcms.model.Specialite;
 import com.restapi.tcms.model.Stagiaire;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,5 +46,27 @@ public class SpecialiteController {
         } catch (EntityNotFoundException e) {
             return ResponseEntity.badRequest().body("Entity not found");
         }
+    }
+
+    @GetMapping(path = "/{id}")
+    public  ResponseEntity<Specialite> getSpecialite(@PathVariable("id") Integer id){
+        try {
+            return ResponseEntity.ok(specialiteDao.getById(id));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+    }
+
+    @GetMapping(path = "/{id}/stagiaires")
+    public List<Stagiaire> getStagiaires(@PathVariable("id") Integer id){
+        Specialite specialite = specialiteDao.getById(id);
+        return  specialite.getListeStagiaires();
+    }
+
+    @GetMapping(path = "/{id}/matieres")
+    public List<Matiere> getMatieres(@PathVariable("id") Integer id){
+        Specialite specialite = specialiteDao.getById(id);
+        return  specialite.getListeMatieres();
     }
 }

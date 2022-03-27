@@ -1,6 +1,7 @@
 package com.restapi.tcms.dao;
 
 import com.restapi.tcms.model.Specialite;
+import com.restapi.tcms.model.Stagiaire;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
@@ -31,4 +32,9 @@ public class SpecialiteDao {
             specialiteRepository.deleteById(id);
         else throw new EntityNotFoundException();
     }
+
+    public Specialite getById(Integer id) {
+        return specialiteRepository.findById(id).orElseThrow(() ->new EntityNotFoundException("Pas de specialite avec l'id " + id));
+    }
+
 }

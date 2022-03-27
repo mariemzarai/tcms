@@ -39,7 +39,7 @@ public class StagiaireDao {
 
     @Transactional
     public Stagiaire update(Long id, String nom, String prenom, Byte sexe, String email, String num_tel, String nom_parent, String num_tel_parent, String adresse_postale) {
-        Stagiaire s = stagiaireRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("Stagiaire avec id " + id + " n'existe pas.\n"));
+        Stagiaire s = getById(id);
 
         if(nom != null && nom.length() > 0){
             s.setNom(nom);

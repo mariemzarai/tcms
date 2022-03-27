@@ -1,5 +1,6 @@
 package com.restapi.tcms.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,12 @@ public class Specialite {
     @Column(unique = true, nullable = false)
     private String titre;
     private String description;
-//    @OneToMany(mappedBy = "specialite")
-//    private List<Stagiaire> listeStagiaires;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "specialite")
+    private List<Stagiaire> listeStagiaires;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "specialite")
+    private List<Matiere> listeMatieres;
 }

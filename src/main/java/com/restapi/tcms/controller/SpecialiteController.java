@@ -1,6 +1,7 @@
 package com.restapi.tcms.controller;
 
 import com.restapi.tcms.dao.SpecialiteDao;
+import com.restapi.tcms.model.Matiere;
 import com.restapi.tcms.model.Specialite;
 import com.restapi.tcms.model.Stagiaire;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,5 +62,11 @@ public class SpecialiteController {
     public List<Stagiaire> getStagiaires(@PathVariable("id") Integer id){
         Specialite specialite = specialiteDao.getById(id);
         return  specialite.getListeStagiaires();
+    }
+
+    @GetMapping(path = "/{id}/matieres")
+    public List<Matiere> getMatieres(@PathVariable("id") Integer id){
+        Specialite specialite = specialiteDao.getById(id);
+        return  specialite.getListeMatieres();
     }
 }

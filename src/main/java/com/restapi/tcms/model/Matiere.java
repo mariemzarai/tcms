@@ -29,6 +29,6 @@ public class Matiere {
     private Float nb_heures;
     @ManyToOne
     private Specialite specialite;
-    @OneToMany
+    @OneToMany(mappedBy = "matiere") // Makes Note the owning side. --RECOMMENDED
     private List<Note> notes;
 }

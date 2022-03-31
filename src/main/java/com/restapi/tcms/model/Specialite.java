@@ -34,4 +34,8 @@ public class Specialite {
     @JsonIgnore
     @OneToMany(mappedBy = "specialite")
     private List<Matiere> listeMatieres;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "specialite")
+    private  List<Groupe> groupes;
 }

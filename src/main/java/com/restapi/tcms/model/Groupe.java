@@ -26,8 +26,12 @@ public class Groupe {
     )
     private Long id;
     @Column(unique = true, nullable = false)
-    private  String nom ;
-    private Integer nbStagiaire ;
+    private  String nom;
+    private Integer nbStagiaire;
+    @ManyToOne
+    private Specialite specialite;
+    @OneToMany(mappedBy = "groupe")
+    private List<Stagiaire> stagiaires;
 
 
 }

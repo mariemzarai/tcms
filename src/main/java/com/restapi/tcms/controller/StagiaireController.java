@@ -49,7 +49,7 @@ public class StagiaireController {
     @GetMapping(path = "/{id}", produces = "application/json")
     public  ResponseEntity<Stagiaire> getStagiaire(@PathVariable("id") Long id){
         try {
-            return ResponseEntity.ok(stagiaireDao.getById(id));
+            return ResponseEntity.ok(stagiaireDao.getById(id).orElseThrow(()->new EntityNotFoundException("stagiare d'"+id+"n'existe pas")));
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
         }

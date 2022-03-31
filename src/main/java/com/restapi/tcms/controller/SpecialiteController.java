@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/specialite")
@@ -39,7 +40,7 @@ public class SpecialiteController {
     }
 
     @DeleteMapping(path = "/supprimer/{id}")
-    public  ResponseEntity<String> deleteSspecialite(@PathVariable("id") Integer id){
+    public  ResponseEntity<String> deleteSspecialite(@PathVariable("id") Long id){
         try {
             specialiteDao.delete(id);
             return  ResponseEntity.ok("Deleted successfully");
@@ -49,23 +50,24 @@ public class SpecialiteController {
     }
 
     @GetMapping(path = "/{id}")
-    public  ResponseEntity<Specialite> getSpecialite(@PathVariable("id") Integer id){
+    public  ResponseEntity<Specialite> getSpecialite(@PathVariable("id") Long id) {
         try {
-            return ResponseEntity.ok(specialiteDao.getById(id));
-        } catch (Exception e) {
+            return ResponseEntity.ok(specialiteDao.getById(id).orElseThrow(() -> new EntityNotFoundException("specialite avec id " + id + " n'existe pas.\n")));
+        } catch (EntityNotFoundException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
 
+
     @GetMapping(path = "/{id}/stagiaires")
-    public List<Stagiaire> getStagiaires(@PathVariable("id") Integer id){
-        Specialite specialite = specialiteDao.getById(id);
+    public List<Stagiaire> getStagiaires(@PathVariable("id") Long id){
+       Specialite specialite = specialiteDao.getById(id);
         return  specialite.getListeStagiaires();
     }
 
     @GetMapping(path = "/{id}/matieres")
-    public List<Matiere> getMatieres(@PathVariable("id") Integer id){
+    public List<Matiere> getMatieres(@PathVariable("id") Long id){
         Specialite specialite = specialiteDao.getById(id);
         return  specialite.getListeMatieres();
     }

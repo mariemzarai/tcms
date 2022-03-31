@@ -2,7 +2,10 @@ package com.restapi.tcms.repository;
 
 import com.restapi.tcms.model.Matiere;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface MatiereRepository extends JpaRepository<Matiere, Integer> {
+@Repository
+public interface MatiereRepository extends JpaRepository<Matiere, Long> {
     boolean existsByNom(String nom);
+
 }

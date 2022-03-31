@@ -20,7 +20,7 @@ public class Matiere {
             strategy = GenerationType.SEQUENCE,
             generator = "matiere_sequence"
     )
-    Integer id;
+    Long id;
     @Column(nullable = false)
     String nom;
     String description;

@@ -22,9 +22,9 @@ public class MatiereController {
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Matiere> get(@PathVariable("id") Integer id){
+    public ResponseEntity<Matiere> get(@PathVariable("id") Long id){
         try {
-            return ResponseEntity.ok(matiereDao.getById(id));
+            return ResponseEntity.ok(matiereDao.getById(id).orElseThrow(()-> new EntityNotFoundException(" matiere n'esxite pas d'id"+id)));
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
@@ -45,7 +45,7 @@ public class MatiereController {
     }
 
     @DeleteMapping(path = "/supprimer/{id}")
-    public  ResponseEntity<String> delete(@PathVariable("id") Integer id){
+    public  ResponseEntity<String> delete(@PathVariable("id") Long id){
         try {
             matiereDao.delete(id);
             return  ResponseEntity.ok("Deleted successfully");
@@ -56,7 +56,7 @@ public class MatiereController {
 
     @PutMapping(path = "/modifier/{id}")
     public ResponseEntity<Matiere> update(
-            @PathVariable("id") Integer id,
+            @PathVariable("id") Long id,
             @RequestParam(required = false) String nom,
             @RequestParam(required = false) String description,
             @RequestParam(required = false) Float coef,

@@ -10,40 +10,40 @@ import org.springframework.stereotype.Component;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Component
-public class MatiereDao {
+public class MatiereDao implements Dao<Matiere> {
     @Autowired
     private MatiereRepository matiereRepository;
     @Autowired
     private SpecialiteRepository specialiteRepository;
-
-    public Matiere create(Matiere matiere){
+    @Override
+    public Optional<Matiere> create(Matiere matiere){
         if(matiere.getNom() == null || matiere.getNom().length() == 0)
             throw new DataIntegrityViolationException("nom_de_matiere_ne_peut_pas_etre_vide");
         if(!matiereRepository.existsByNom(matiere.getNom()))
-            return matiereRepository.save(matiere);
+            return Optional.of(matiereRepository.save(matiere));
         else
             throw new DataIntegrityViolationException("matiere_avec_ce_nom_existe");
     }
-
+    @Override
+    public  Optional<Matiere> getById(Long id) {
+        return matiereRepository.findById(id) ;}
+    @Override
     public List<Matiere> getAll() {
         return matiereRepository.findAll();
     }
-
-    public void delete(Integer id) throws EntityNotFoundException {
+    @Override
+    public void delete(Long id) throws EntityNotFoundException {
         if(matiereRepository.existsById(id))
             matiereRepository.deleteById(id);
         else throw new EntityNotFoundException();
     }
 
-    public Matiere getById(Integer id) {
-        return matiereRepository.findById(id)
-                .orElseThrow(() ->new EntityNotFoundException("Pas de matiere avec l'id " + id));
-    }
     @Transactional
-    public Matiere update(Integer id, String nom, String description, Float coef, Float nb_heures, Integer specialite) {
-        Matiere matiere = getById(id);
+    public Matiere update(Long id, String nom, String description, Float coef, Float nb_heures, Integer specialite) {
+        Matiere matiere = MatiereRepository.findById(id);
         if(nom != null && nom.length() > 0){
             matiere.setNom(nom);
         }
@@ -63,7 +63,7 @@ public class MatiereDao {
         return  matiere;
     }
 
-    public boolean existsById(Integer id) {
+    public boolean existsById(Long id) {
         return matiereRepository.existsById(id);
     }
 }

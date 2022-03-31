@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -19,7 +20,10 @@ public class Stagiaire extends Personne{
     private String adresse_postale;
     @ManyToOne
     private Specialite specialite;
-
+    @ManyToOne
+    private Groupe groupe;
+    @OneToMany(mappedBy = "stagiaire")
+    private List<Note> notes;
 }
 
 

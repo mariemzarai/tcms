@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -20,12 +21,14 @@ public class Matiere {
             strategy = GenerationType.SEQUENCE,
             generator = "matiere_sequence"
     )
-    Integer id;
+    private Integer id;
     @Column(nullable = false)
-    String nom;
-    String description;
-    float coefficient = 1;
-    Float nb_heures;
+    private String nom;
+    private String description;
+    private float coefficient = 1;
+    private Float nb_heures;
     @ManyToOne
     private Specialite specialite;
+    @OneToMany
+    private List<Note> notes;
 }

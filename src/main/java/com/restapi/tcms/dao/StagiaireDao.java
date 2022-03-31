@@ -5,15 +5,20 @@ import com.restapi.tcms.repository.StagiaireRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
 
-@Component
+@Service
 public class StagiaireDao {
+    private final StagiaireRepository stagiaireRepository;
+
     @Autowired
-    private StagiaireRepository stagiaireRepository;
+    public StagiaireDao(StagiaireRepository stagiaireRepository) {
+        this.stagiaireRepository = stagiaireRepository;
+    }
 
     public Stagiaire create(Stagiaire stagiaire) {
         if(!stagiaireRepository.existsByEmail(stagiaire.getEmail()))

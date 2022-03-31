@@ -5,14 +5,19 @@ import com.restapi.tcms.repository.SpecialiteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
-@Component
+@Service
 public class SpecialiteDao {
-    @Autowired
     private SpecialiteRepository specialiteRepository;
+
+    @Autowired
+    public SpecialiteDao(SpecialiteRepository specialiteRepository) {
+        this.specialiteRepository = specialiteRepository;
+    }
 
     public Specialite create(Specialite specialite){
         if(specialite.getTitre() == null || specialite.getTitre().length() == 0)

@@ -6,17 +6,22 @@ import com.restapi.tcms.repository.SpecialiteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
 
-@Component
+@Service
 public class MatiereDao {
-    @Autowired
     private MatiereRepository matiereRepository;
-    @Autowired
     private SpecialiteRepository specialiteRepository;
+
+    @Autowired
+    public MatiereDao(MatiereRepository matiereRepository, SpecialiteRepository specialiteRepository) {
+        this.matiereRepository = matiereRepository;
+        this.specialiteRepository = specialiteRepository;
+    }
 
     public Matiere create(Matiere matiere){
         if(matiere.getNom() == null || matiere.getNom().length() == 0)

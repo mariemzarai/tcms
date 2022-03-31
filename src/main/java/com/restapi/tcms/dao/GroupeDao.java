@@ -10,11 +10,13 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
-@Data
-@AllArgsConstructor
 public class GroupeDao {
-    @Autowired
     private final GroupeRepository groupeRepository;
+
+    @Autowired
+    public GroupeDao(GroupeRepository groupeRepository) {
+        this.groupeRepository = groupeRepository;
+    }
 
     public List<Groupe> getAll() {
         return groupeRepository.findAll() ;

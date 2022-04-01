@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Component
@@ -42,8 +43,15 @@ public class MatiereDao implements Dao<Matiere> {
     }
 
     @Transactional
-    public Matiere update(Long id, String nom, String description, Float coef, Float nb_heures, Integer specialite) {
-        Matiere matiere = MatiereRepository.findById(id);
+    public Matiere update(Long id, String nom, String description, Float coef, Float nb_heures, Long specialite) {
+        Optional<Matiere> optionalMatiere= getById(id);
+        Matiere matiere;
+
+        if (optionalMatiere.isPresent()){
+            matiere = optionalMatiere.get();
+        }
+        else throw new NoSuchElementException("y a aucun matiere");
+
         if(nom != null && nom.length() > 0){
             matiere.setNom(nom);
         }

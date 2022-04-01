@@ -61,7 +61,7 @@ public class MatiereController {
             @RequestParam(required = false) String description,
             @RequestParam(required = false) Float coef,
             @RequestParam(required = false) Float nb_heures,
-            @RequestParam(required = false) Integer specialite){
+            @RequestParam(required = false) Long specialite){
 
         try {
             return ResponseEntity.ok(matiereDao.update(id, nom, description, coef, nb_heures, specialite));

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @RestController
@@ -62,13 +63,19 @@ public class SpecialiteController {
 
     @GetMapping(path = "/{id}/stagiaires")
     public List<Stagiaire> getStagiaires(@PathVariable("id") Long id){
-       Specialite specialite = specialiteDao.getById(id);
-        return  specialite.getListeStagiaires();
+      Optional<Specialite> optionalSpecialite = specialiteDao.getById(id);
+      if(optionalSpecialite.isPresent())
+        return  optionalSpecialite.get().getListeStagiaires();
+      else throw new NoSuchElementException("y a aucun stagiaire");
+
+
     }
 
     @GetMapping(path = "/{id}/matieres")
     public List<Matiere> getMatieres(@PathVariable("id") Long id){
-        Specialite specialite = specialiteDao.getById(id);
-        return  specialite.getListeMatieres();
+        Optional<Specialite> optionalSpecialite = specialiteDao.getById(id);
+         if (optionalSpecialite.isPresent())
+        return  optionalSpecialite.get().getListeMatieres();
+         else throw new NoSuchElementException("y a aucun matiere");
     }
 }

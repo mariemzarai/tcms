@@ -32,6 +32,8 @@ public class Groupe {
     private Specialite specialite;
     @OneToMany(mappedBy = "groupe")
     private List<Stagiaire> stagiaires;
+    @OneToMany(mappedBy = "groupe")
+    private List<Seance> seances;
 
 
 }

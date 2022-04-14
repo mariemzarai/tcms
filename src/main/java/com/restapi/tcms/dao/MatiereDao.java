@@ -14,8 +14,8 @@ import java.util.List;
 
 @Service
 public class MatiereDao {
-    private MatiereRepository matiereRepository;
-    private SpecialiteRepository specialiteRepository;
+    private final MatiereRepository matiereRepository;
+    private final SpecialiteRepository specialiteRepository;
 
     @Autowired
     public MatiereDao(MatiereRepository matiereRepository, SpecialiteRepository specialiteRepository) {

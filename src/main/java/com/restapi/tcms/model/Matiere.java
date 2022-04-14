@@ -31,4 +31,6 @@ public class Matiere {
     private Specialite specialite;
     @OneToMany(mappedBy = "matiere") // Makes Note the owning side. --RECOMMENDED
     private List<Note> notes;
+    @OneToMany(mappedBy = "matiere")
+    private List<Seance> seances;
 }

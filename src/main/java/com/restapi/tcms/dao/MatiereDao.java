@@ -50,7 +50,7 @@ public class MatiereDao implements Dao<Matiere> {
         if (optionalMatiere.isPresent()){
             matiere = optionalMatiere.get();
         }
-        else throw new NoSuchElementException("y a aucun matiere");
+        else throw new NoSuchElementException("Aucun matiere avec id " + specialite);
 
         if(nom != null && nom.length() > 0){
             matiere.setNom(nom);

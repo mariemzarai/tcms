@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/specialite")
@@ -39,7 +41,7 @@ public class SpecialiteController {
     }
 
     @DeleteMapping(path = "/supprimer/{id}")
-    public  ResponseEntity<String> deleteSspecialite(@PathVariable("id") Integer id){
+    public  ResponseEntity<String> deleteSspecialite(@PathVariable("id") Long id){
         try {
             specialiteDao.delete(id);
             return  ResponseEntity.ok("Deleted successfully");
@@ -49,24 +51,31 @@ public class SpecialiteController {
     }
 
     @GetMapping(path = "/{id}")
-    public  ResponseEntity<Specialite> getSpecialite(@PathVariable("id") Integer id){
+    public  ResponseEntity<Specialite> getSpecialite(@PathVariable("id") Long id) {
         try {
-            return ResponseEntity.ok(specialiteDao.getById(id));
-        } catch (Exception e) {
+            return ResponseEntity.ok(specialiteDao.getById(id).orElseThrow(() -> new EntityNotFoundException("specialite avec id " + id + " n'existe pas.\n")));
+        } catch (EntityNotFoundException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
 
+
     @GetMapping(path = "/{id}/stagiaires")
-    public List<Stagiaire> getStagiaires(@PathVariable("id") Integer id){
-        Specialite specialite = specialiteDao.getById(id);
-        return  specialite.getListeStagiaires();
+    public List<Stagiaire> getStagiaires(@PathVariable("id") Long id){
+      Optional<Specialite> optionalSpecialite = specialiteDao.getById(id);
+      if(optionalSpecialite.isPresent())
+        return  optionalSpecialite.get().getListeStagiaires();
+      else throw new NoSuchElementException("y a aucun stagiaire");
+
+
     }
 
     @GetMapping(path = "/{id}/matieres")
-    public List<Matiere> getMatieres(@PathVariable("id") Integer id){
-        Specialite specialite = specialiteDao.getById(id);
-        return  specialite.getListeMatieres();
+    public List<Matiere> getMatieres(@PathVariable("id") Long id){
+        Optional<Specialite> optionalSpecialite = specialiteDao.getById(id);
+         if (optionalSpecialite.isPresent())
+        return  optionalSpecialite.get().getListeMatieres();
+         else throw new NoSuchElementException("y a aucun matiere");
     }
 }

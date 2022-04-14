@@ -11,44 +11,48 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
-@Service
-public class MatiereDao {
-    private final MatiereRepository matiereRepository;
-    private final SpecialiteRepository specialiteRepository;
-
+@Component
+public class MatiereDao implements Dao<Matiere> {
     @Autowired
-    public MatiereDao(MatiereRepository matiereRepository, SpecialiteRepository specialiteRepository) {
-        this.matiereRepository = matiereRepository;
-        this.specialiteRepository = specialiteRepository;
-    }
-
-    public Matiere create(Matiere matiere){
+    private MatiereRepository matiereRepository;
+    @Autowired
+    private SpecialiteRepository specialiteRepository;
+    @Override
+    public Optional<Matiere> create(Matiere matiere){
         if(matiere.getNom() == null || matiere.getNom().length() == 0)
             throw new DataIntegrityViolationException("nom_de_matiere_ne_peut_pas_etre_vide");
         if(!matiereRepository.existsByNom(matiere.getNom()))
-            return matiereRepository.save(matiere);
+            return Optional.of(matiereRepository.save(matiere));
         else
             throw new DataIntegrityViolationException("matiere_avec_ce_nom_existe");
     }
-
+    @Override
+    public  Optional<Matiere> getById(Long id) {
+        return matiereRepository.findById(id) ;}
+    @Override
     public List<Matiere> getAll() {
         return matiereRepository.findAll();
     }
-
-    public void delete(Integer id) throws EntityNotFoundException {
+    @Override
+    public void delete(Long id) throws EntityNotFoundException {
         if(matiereRepository.existsById(id))
             matiereRepository.deleteById(id);
         else throw new EntityNotFoundException();
     }
 
-    public Matiere getById(Integer id) {
-        return matiereRepository.findById(id)
-                .orElseThrow(() ->new EntityNotFoundException("Pas de matiere avec l'id " + id));
-    }
     @Transactional
-    public Matiere update(Integer id, String nom, String description, Float coef, Float nb_heures, Integer specialite) {
-        Matiere matiere = getById(id);
+    public Matiere update(Long id, String nom, String description, Float coef, Float nb_heures, Long specialite) {
+        Optional<Matiere> optionalMatiere= getById(id);
+        Matiere matiere;
+
+        if (optionalMatiere.isPresent()){
+            matiere = optionalMatiere.get();
+        }
+        else throw new NoSuchElementException("Aucun matiere avec id " + specialite);
+
         if(nom != null && nom.length() > 0){
             matiere.setNom(nom);
         }
@@ -68,7 +72,7 @@ public class MatiereDao {
         return  matiere;
     }
 
-    public boolean existsById(Integer id) {
+    public boolean existsById(Long id) {
         return matiereRepository.existsById(id);
     }
 }

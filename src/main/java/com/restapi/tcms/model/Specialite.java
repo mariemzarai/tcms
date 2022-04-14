@@ -22,7 +22,7 @@ public class Specialite {
             strategy = GenerationType.SEQUENCE,
             generator = "specialite_sequence"
     )
-    private Integer id;
+    private Long id;
     @Column(unique = true, nullable = false)
     private String titre;
     private String description;

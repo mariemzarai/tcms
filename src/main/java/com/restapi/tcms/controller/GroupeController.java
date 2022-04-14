@@ -38,8 +38,8 @@ public class GroupeController {
     @GetMapping(path = "/{id}")
     public  ResponseEntity<Groupe> getById(@PathVariable("id") Long id){
         try {
-            return ResponseEntity.ok(groupeDao.getById(id));
-        } catch (Exception e) {
+            return ResponseEntity.ok(groupeDao.getById(id).orElseThrow(()->new EntityNotFoundException("groupe avec id "+id+" n'existe pas")));
+        } catch (EntityNotFoundException e) {
             e.printStackTrace();
             return ResponseEntity.notFound().build();
         }

@@ -4,14 +4,13 @@ import com.restapi.tcms.model.Specialite;
 import com.restapi.tcms.repository.SpecialiteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
-@Component
+@Service
 public class SpecialiteDao implements Dao<Specialite>{
 
     private  final  SpecialiteRepository specialiteRepository;

@@ -12,7 +12,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-@Component
+@Service
 public class StagiaireDao implements Dao<Stagiaire> {
 
     private final StagiaireRepository stagiaireRepository;

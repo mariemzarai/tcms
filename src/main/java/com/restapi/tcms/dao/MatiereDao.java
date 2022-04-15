@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-@Component
+@Service
 public class MatiereDao implements Dao<Matiere> {
     @Autowired
     private MatiereRepository matiereRepository;

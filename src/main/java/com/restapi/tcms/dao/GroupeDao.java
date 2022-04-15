@@ -12,12 +12,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Data
-@AllArgsConstructor
 public class GroupeDao implements Dao<Groupe> {
-    @Autowired
     private final GroupeRepository groupeRepository;
 
+    @Autowired
+    public GroupeDao(GroupeRepository groupeRepository) {
+        this.groupeRepository = groupeRepository;
+    }
 
     @Override
     public Optional<Groupe> getById(Long id) {

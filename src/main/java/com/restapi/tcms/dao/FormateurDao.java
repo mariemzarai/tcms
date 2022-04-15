@@ -4,13 +4,14 @@ import com.restapi.tcms.repository.FormateurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.*;
 
 
-@Component
+@Service
 public class FormateurDao implements Dao<Formateur>{
     private  final FormateurRepository formateurRepository ;
     @Autowired

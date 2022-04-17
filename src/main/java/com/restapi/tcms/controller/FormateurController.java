@@ -20,11 +20,11 @@ public class FormateurController {
     public FormateurController(FormateurDao formateurDao){this.formateurDao=formateurDao;}
 
     @PostMapping(path = "/ajouter", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<Object> create(@RequestBody Formateur formateur){
+    public ResponseEntity<Formateur> create(@RequestBody Formateur formateur){
         try {
-            return new ResponseEntity<>(formateurDao.create(formateur), HttpStatus.CREATED);
+            return  ResponseEntity.ok(formateurDao.create(formateur).get());
         } catch (DataIntegrityViolationException e) {
-            return ResponseEntity.badRequest().body(e.toString());
+            return ResponseEntity.notFound().build();
         }
     }
 
@@ -46,8 +46,8 @@ public class FormateurController {
     @GetMapping(path = "/{id}")
     public  ResponseEntity<Formateur> getById(@PathVariable("id") Long id){
         try {
-            return ResponseEntity.ok(formateurDao.getById(id));
-        } catch (Exception e) {
+            return ResponseEntity.ok(formateurDao.getById(id).orElseThrow(()-> new EntityNotFoundException("formateur avec id: " + id + " n'existe pas")));
+        } catch (EntityNotFoundException e) {
             e.printStackTrace();
             return ResponseEntity.notFound().build();
         }

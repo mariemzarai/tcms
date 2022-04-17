@@ -8,32 +8,38 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
-import java.util.List;
+import java.util.*;
 
 
 @Service
-public class FormateurDao {
-    private final FormateurRepository formateurRepository;
-
+public class FormateurDao implements Dao<Formateur>{
+    private  final FormateurRepository formateurRepository ;
     @Autowired
-    public FormateurDao(FormateurRepository formateurRepository){this.formateurRepository=formateurRepository;}
+    public FormateurDao(FormateurRepository formateurRepository)
+    {
+        this.formateurRepository=formateurRepository;
+    }
 
+    @Override
+    public Optional<Formateur> getById(Long id) {
+        return formateurRepository.findById(id);
+    }
+
+    @Override
     public List<Formateur> getAll() {
-        return formateurRepository.findAll() ;
+        return formateurRepository.findAll();
     }
 
-    public  Formateur getById(Long id) {
-        return  formateurRepository.findById(id).orElseThrow(()->new EntityNotFoundException("Formateur avec id " + id + " n'existe pas."));
-    }
-
-    public Formateur create(Formateur  formateur) {
+    @Override
+    public Optional<Formateur> create(Formateur  formateur) {
         if(!formateurRepository.existsByEmail(formateur.getEmail()))
-            return formateurRepository.save(formateur);
+            return Optional.of(formateurRepository.save(formateur));
         else
             throw new DataIntegrityViolationException("email taken");
     }
 
-    public void delete(long id) throws EntityNotFoundException {
+    @Override
+    public void delete(Long id) throws EntityNotFoundException {
         if(formateurRepository.existsById(id))
             formateurRepository.deleteById(id);
         else throw new EntityNotFoundException();

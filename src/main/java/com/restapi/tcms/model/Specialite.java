@@ -22,7 +22,7 @@ public class Specialite {
             strategy = GenerationType.SEQUENCE,
             generator = "specialite_sequence"
     )
-    private Integer id;
+    private Long id;
     @Column(unique = true, nullable = false)
     private String titre;
     private String description;
@@ -34,4 +34,8 @@ public class Specialite {
     @JsonIgnore
     @OneToMany(mappedBy = "specialite")
     private List<Matiere> listeMatieres;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "specialite")
+    private  List<Groupe> listeGroupes;
 }

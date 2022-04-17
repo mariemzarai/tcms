@@ -10,28 +10,27 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class StagiaireDao {
+public class StagiaireDao implements Dao<Stagiaire> {
+
     private final StagiaireRepository stagiaireRepository;
-
     @Autowired
-    public StagiaireDao(StagiaireRepository stagiaireRepository) {
-        this.stagiaireRepository = stagiaireRepository;
-    }
+    public  StagiaireDao(StagiaireRepository stagiaireRepository){this.stagiaireRepository=stagiaireRepository;}
 
-    public Stagiaire create(Stagiaire stagiaire) {
+    @Override
+    public Optional<Stagiaire> getById(Long id){
+        return stagiaireRepository.findById(id);
+    }
+    @Override
+    public Optional<Stagiaire> create(Stagiaire stagiaire) {
         if(!stagiaireRepository.existsByEmail(stagiaire.getEmail()))
-            return stagiaireRepository.save(stagiaire);
+            return Optional.of(stagiaireRepository.save(stagiaire));
         else
             throw new DataIntegrityViolationException("email taken");
     }
-
-    public Stagiaire getById(Long id){
-        return stagiaireRepository.findById(id)
-                .orElseThrow(() ->new EntityNotFoundException("Pas de stagiaire avec l'id " + id));
-    }
-
+    @Override
     public void delete(Long id) throws EntityNotFoundException{
         if(stagiaireRepository.existsById(id))
             stagiaireRepository.deleteById(id);
@@ -44,7 +43,8 @@ public class StagiaireDao {
 
     @Transactional
     public Stagiaire update(Long id, String nom, String prenom, Byte sexe, String email, String num_tel, String nom_parent, String num_tel_parent, String adresse_postale) {
-        Stagiaire s = getById(id);
+      Stagiaire s=stagiaireRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("stagiaire avec id " + id + " n'existe pas.\n"));
+
 
         if(nom != null && nom.length() > 0){
             s.setNom(nom);

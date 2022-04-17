@@ -1,6 +1,7 @@
 package com.restapi.tcms.controller;
 
 import com.restapi.tcms.dao.SpecialiteDao;
+import com.restapi.tcms.model.Groupe;
 import com.restapi.tcms.model.Matiere;
 import com.restapi.tcms.model.Specialite;
 import com.restapi.tcms.model.Stagiaire;
@@ -77,5 +78,13 @@ public class SpecialiteController {
          if (optionalSpecialite.isPresent())
         return  optionalSpecialite.get().getListeMatieres();
          else throw new NoSuchElementException("y a aucun matiere");
+    }
+
+    @GetMapping(path = "/{id}/groupes")
+    public List<Groupe> getGroupes(@PathVariable("id") Long id){
+        Optional<Specialite> optionalSpecialite = specialiteDao.getById(id);
+        if (optionalSpecialite.isPresent())
+            return  optionalSpecialite.get().getListeGroupes();
+        else throw new EntityNotFoundException("Specialite avec id " + id + " n'existe pas");
     }
 }

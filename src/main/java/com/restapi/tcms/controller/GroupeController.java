@@ -35,6 +35,11 @@ public class GroupeController {
         return groupeDao.getAll();
     }
 
+    @GetMapping(path = "/stat")
+    public long getNumberOfGroupes(){
+        return groupeDao.countAll();
+    }
+
     @GetMapping(path = "/{id}")
     public  ResponseEntity<Groupe> getById(@PathVariable("id") Long id){
         try {

@@ -20,17 +20,22 @@ public class FormateurController {
     public FormateurController(FormateurDao formateurDao){this.formateurDao=formateurDao;}
 
     @PostMapping(path = "/ajouter", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<Formateur> create(@RequestBody Formateur formateur){
+    public ResponseEntity<Object> create(@RequestBody Formateur formateur){
         try {
             return  ResponseEntity.ok(formateurDao.create(formateur).get());
         } catch (DataIntegrityViolationException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.badRequest().body(e.toString());
         }
     }
 
     @GetMapping(path = "/tous")
     public List<Formateur> getAll(){
         return formateurDao.getAll();
+    }
+
+    @GetMapping(path = "/stat")
+    public long getNumberOfFormateurs(){
+        return formateurDao.countAll();
     }
 
     @DeleteMapping(path = "/supprimer/{id}")

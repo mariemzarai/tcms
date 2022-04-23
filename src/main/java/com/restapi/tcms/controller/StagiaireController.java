@@ -35,6 +35,10 @@ public class StagiaireController {
     public List<Stagiaire> getAll(){
         return stagiaireDao.getAll();
     }
+    @GetMapping(path = "/stat")
+    public long getNumberOfStagiaires(){
+        return stagiaireDao.countAll();
+    }
 
     @DeleteMapping(path = "/supprimer/{id}")
     public  ResponseEntity<String> delete(@PathVariable("id") Long id){

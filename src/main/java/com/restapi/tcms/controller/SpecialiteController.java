@@ -41,6 +41,11 @@ public class SpecialiteController {
         return specialiteDao.getAll();
     }
 
+    @GetMapping(path = "/stat")
+    public long getNumberOfSpecialites(){
+        return specialiteDao.countAll();
+    }
+
     @DeleteMapping(path = "/supprimer/{id}")
     public  ResponseEntity<String> deleteSspecialite(@PathVariable("id") Long id){
         try {

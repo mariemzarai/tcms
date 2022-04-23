@@ -45,5 +45,7 @@ public class GroupeDao implements Dao<Groupe> {
     }
 
 
-
+    public long countAll() {
+        return groupeRepository.count();
+    }
 }

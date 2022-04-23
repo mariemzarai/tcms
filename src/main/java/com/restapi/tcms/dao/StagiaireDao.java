@@ -81,4 +81,7 @@ public class StagiaireDao implements Dao<Stagiaire> {
         return s;
     }
 
+    public long countAll() {
+        return stagiaireRepository.count();
+    }
 }

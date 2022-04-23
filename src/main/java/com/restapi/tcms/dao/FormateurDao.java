@@ -79,6 +79,10 @@ public class FormateurDao implements Dao<Formateur>{
         return f;
     }
 
+    public long countAll() {
+        return formateurRepository.count();
+    }
+
     /*public Formateur getFormateurByNom(String nom) {
          return  formateurRepository.getFormateurByNom(nom).orElseThrow(()->new RuntimeException("aucun_formateur_avec_le_nom "+ nom));
      }*/

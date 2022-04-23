@@ -47,5 +47,7 @@ public class SpecialiteDao implements Dao<Specialite>{
     }
 
 
-
+    public long countAll() {
+        return  specialiteRepository.count();
+    }
 }

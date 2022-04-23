@@ -31,6 +31,7 @@ public class Groupe {
     @ManyToOne
     private Specialite specialite;
     @OneToMany(mappedBy = "groupe")
+    @JsonIgnore
     private List<Stagiaire> stagiaires;
     @OneToMany(mappedBy = "groupe")
     @JsonIgnore

@@ -42,7 +42,7 @@ public class FormateurController {
     public  ResponseEntity<String> delete(@PathVariable("id") Long id){
         try {
             formateurDao.delete(id);
-            return  ResponseEntity.ok("Deleted successfully");
+            return  ResponseEntity.ok("{\"message\":\"Deleted successfully\"}");
         } catch (EntityNotFoundException e) {
             return ResponseEntity.badRequest().body("Entity not found");
         }

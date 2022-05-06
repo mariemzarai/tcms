@@ -1,4 +1,5 @@
 package com.restapi.tcms.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +17,7 @@ public class Formateur extends Personne {
     private String profession;
 
     @OneToMany(mappedBy = "formateur")
+    @JsonIgnore
     private List<Seance> seances;
 
 }

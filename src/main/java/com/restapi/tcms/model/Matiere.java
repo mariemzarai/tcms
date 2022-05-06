@@ -1,5 +1,6 @@
 package com.restapi.tcms.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,7 +31,9 @@ public class Matiere {
     @ManyToOne
     private Specialite specialite;
     @OneToMany(mappedBy = "matiere") // Makes Note the owning side. --RECOMMENDED
+    @JsonIgnore
     private List<Note> notes;
     @OneToMany(mappedBy = "matiere")
+    @JsonIgnore
     private List<Seance> seances;
 }

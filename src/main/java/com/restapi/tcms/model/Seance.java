@@ -23,8 +23,6 @@ public class Seance {
             generator = "seance_sequence"
     )
     private Long id;
-    private LocalDateTime horaire;
-
     @ManyToOne
     private Formateur formateur;
     @ManyToOne

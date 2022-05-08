@@ -2,7 +2,7 @@ package com.restapi.tcms.security;
 
 import com.restapi.tcms.dao.Dao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -62,9 +62,8 @@ public class UtilisateurDao implements Dao<Utilisateur>, UserDetailsService {
         Utilisateur utilisateur = utilisateurRepository.findByUsername(username)
                 .orElseThrow(()->new UsernameNotFoundException("No user with username: " + username));
 
-        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        //TODO add authorities to users and add dynamically
-        authorities.add(new SimpleGrantedAuthority("utilisateur"));
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(utilisateur.getRole());
 
         return new User(utilisateur.getUsername(), utilisateur.getPassword(), authorities);
     }

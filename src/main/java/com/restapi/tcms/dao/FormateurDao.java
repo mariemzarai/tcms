@@ -1,9 +1,9 @@
 package com.restapi.tcms.dao;
+import com.restapi.tcms.ServiceAuth;
 import com.restapi.tcms.model.Formateur;
 import com.restapi.tcms.repository.FormateurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -13,11 +13,13 @@ import java.util.*;
 
 @Service
 public class FormateurDao implements Dao<Formateur>{
-    private  final FormateurRepository formateurRepository ;
+    private final FormateurRepository formateurRepository;
+    private final ServiceAuth serviceAuth;
     @Autowired
-    public FormateurDao(FormateurRepository formateurRepository)
+    public FormateurDao(FormateurRepository formateurRepository, ServiceAuth serviceAuth)
     {
         this.formateurRepository=formateurRepository;
+        this.serviceAuth = serviceAuth;
     }
 
     @Override
@@ -32,8 +34,11 @@ public class FormateurDao implements Dao<Formateur>{
 
     @Override
     public Optional<Formateur> create(Formateur  formateur) {
-        if(!formateurRepository.existsByEmail(formateur.getEmail()))
-            return Optional.of(formateurRepository.save(formateur));
+        if(!formateurRepository.existsByEmail(formateur.getEmail())) {
+            Optional<Formateur> opFormateur =  Optional.of(formateurRepository.save(formateur));
+            opFormateur.ifPresent(serviceAuth::createIdentityAccount);
+            return opFormateur;
+        }
         else
             throw new DataIntegrityViolationException("email taken");
     }

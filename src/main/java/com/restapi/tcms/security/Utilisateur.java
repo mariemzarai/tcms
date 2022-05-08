@@ -1,5 +1,6 @@
 package com.restapi.tcms.security;
 
+import com.restapi.tcms.model.Personne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,5 +18,7 @@ public class Utilisateur {
     @Column(unique = true)
     private String username;
     private String password;
-    //todo roles
+    private Role role;
+    @OneToOne
+    private Personne identite;
 }

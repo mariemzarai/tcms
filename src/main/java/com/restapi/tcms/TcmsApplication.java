@@ -32,12 +32,4 @@ public class TcmsApplication {
 		return new BCryptPasswordEncoder();
 	}
 
-	//TODO remove
-	@Bean
-	CommandLineRunner run(UtilisateurDao utilisateurDao){
-		return args -> {
-			utilisateurDao.create(new Utilisateur(null, "yassine", "password"));
-		};
-	}
-
 }

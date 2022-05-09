@@ -20,12 +20,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import static java.util.Arrays.stream;
 
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
     @Override
@@ -44,7 +42,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     String username = decodedJWT.getSubject();
                     String[] roles = decodedJWT.getClaim("roles").asArray(String.class);
                     //TODO try to get claim as List directly
-                    Collection<GrantedAuthority> authorities = decodedJWT.getClaim("roles").asList(GrantedAuthority.class);
+                    Collection<SimpleGrantedAuthority> authorities = decodedJWT.getClaim("roles").asList(SimpleGrantedAuthority.class);
                     UsernamePasswordAuthenticationToken authenticationToken =
                             new UsernamePasswordAuthenticationToken(username, null, authorities);
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
@@ -57,7 +55,16 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     new ObjectMapper().writeValue(response.getOutputStream(), messages);
                 }
             }
-            else filterChain.doFilter(request, response);
+            else{
+                response.setStatus(HttpStatus.FORBIDDEN.value());
+                response.setHeader("Access-Control-Expose-Headers", "Reason");
+                response.addHeader("Reason", "No Authorization header token found");
+//                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+//                Map<String, String> messages = new HashMap<>();
+//                messages.put("error_reason", "No Authorization header token found");
+//                new ObjectMapper().writeValue(response.getOutputStream(), messages);
+                filterChain.doFilter(request, response);
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.restapi.tcms.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,4 +30,7 @@ public class Seance {
     private Groupe groupe;
     @ManyToOne
     private Matiere matiere;
+    @OneToMany(mappedBy = "seance")
+    @JsonIgnore
+    private List<Presence> presenceList;
 }

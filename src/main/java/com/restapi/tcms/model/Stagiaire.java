@@ -1,5 +1,6 @@
 package com.restapi.tcms.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,9 @@ public class Stagiaire extends Personne{
     private Groupe groupe;
     @OneToMany(mappedBy = "stagiaire")
     private List<Note> notes;
+    @OneToMany(mappedBy = "stagiaire")
+    @JsonIgnore
+    private List<Presence> presenceList;
 }
 
 

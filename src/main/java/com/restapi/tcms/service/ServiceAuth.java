@@ -1,10 +1,11 @@
-package com.restapi.tcms;
+package com.restapi.tcms.service;
 
 import com.restapi.tcms.model.Formateur;
 import com.restapi.tcms.model.Personne;
 import com.restapi.tcms.security.Role;
 import com.restapi.tcms.security.Utilisateur;
 import com.restapi.tcms.security.UtilisateurDao;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -22,5 +23,18 @@ public class ServiceAuth {
         Optional<Utilisateur> OpUtilisateur =
                 utilisateurDao.create(new Utilisateur(null, p.getEmail(), p.getNum_tel(), role, p));
         return OpUtilisateur.isPresent();
+    }
+
+    public Personne getAuthenticatedUser(){
+        String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (username == null)
+            return null;
+        Utilisateur utilisateur = null;
+        if (utilisateurDao.getByUsername(username).isPresent()) {
+            utilisateur = utilisateurDao.getByUsername(username).get();
+        }
+        else
+            return null;
+        return utilisateur.getIdentite();
     }
 }

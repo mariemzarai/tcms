@@ -1,6 +1,6 @@
 package com.restapi.tcms.dao;
 
-import com.restapi.tcms.ServiceAuth;
+import com.restapi.tcms.service.ServiceAuth;
 import com.restapi.tcms.model.Stagiaire;
 import com.restapi.tcms.repository.StagiaireRepository;
 import org.springframework.beans.factory.annotation.Autowired;

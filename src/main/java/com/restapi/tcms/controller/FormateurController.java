@@ -1,11 +1,10 @@
 package com.restapi.tcms.controller;
 import com.restapi.tcms.dao.FormateurDao;
 import com.restapi.tcms.model.Formateur;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import com.restapi.tcms.model.Seance;
+import com.restapi.tcms.service.ServiceFormateur;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.persistence.EntityNotFoundException;
@@ -16,8 +15,11 @@ public class FormateurController {
 
 
     private final FormateurDao formateurDao;
+    private final ServiceFormateur serviceFormateur;
     @Autowired
-    public FormateurController(FormateurDao formateurDao){this.formateurDao=formateurDao;}
+    public FormateurController(FormateurDao formateurDao, ServiceFormateur serviceFormateur){this.formateurDao=formateurDao;
+        this.serviceFormateur = serviceFormateur;
+    }
 
     @PostMapping(path = "/ajouter", consumes = "application/json", produces = "application/json")
     public ResponseEntity<Object> create(@RequestBody Formateur formateur){
@@ -69,5 +71,10 @@ public class FormateurController {
             @RequestParam(required = false) String email2,
             @RequestParam(required = false) String profession)
             {return formateurDao.update(id, nom, prenom, sexe, email, num_tel,email2,profession);
+    }
+
+    @GetMapping(path = "/seances")
+    public List<Seance> getSeancesAuthenticatedFormateur(){
+        return serviceFormateur.getListSeanceOfAuthenticatedFormateur();
     }
 }

@@ -59,6 +59,11 @@ public class GroupeController {
             return ResponseEntity.badRequest().body("Entity not found");
         }
     }
+
+    @GetMapping(path = "/{id}/stagiaires")
+    public List<Stagiaire> getStagiaires(@PathVariable("id") Long id){
+        return groupeDao.getStagiairesOfGroupe(id);
+    }
 /* @GetMapping(path = "/{nom}")
     public Groupe getByNom(@PathVariable("nom") String nom){return groupeDao.getGroupeByNom(nom);
     }*/

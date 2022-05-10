@@ -1,5 +1,5 @@
 package com.restapi.tcms.dao;
-import com.restapi.tcms.ServiceAuth;
+import com.restapi.tcms.service.ServiceAuth;
 import com.restapi.tcms.model.Formateur;
 import com.restapi.tcms.repository.FormateurRepository;
 import org.springframework.beans.factory.annotation.Autowired;

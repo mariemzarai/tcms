@@ -22,6 +22,7 @@ public class Stagiaire extends Personne{
     @ManyToOne
     private Groupe groupe;
     @OneToMany(mappedBy = "stagiaire")
+    @JsonIgnore
     private List<Note> notes;
     @OneToMany(mappedBy = "stagiaire")
     @JsonIgnore

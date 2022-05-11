@@ -22,9 +22,16 @@ public class Note {
     )
     private Integer id;
     private Float valeur;
-    private TypeExamen type;
+    private String type;
     @ManyToOne
     private Stagiaire stagiaire;
     @ManyToOne
     private Matiere matiere;
+
+    public Note(Float valeur, String type, Stagiaire stagiaire, Matiere matiere) {
+        this.valeur = valeur;
+        this.type = type;
+        this.stagiaire = stagiaire;
+        this.matiere = matiere;
+    }
 }

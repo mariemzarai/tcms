@@ -6,6 +6,7 @@ import com.restapi.tcms.dao.StagiaireDao;
 import com.restapi.tcms.model.Presence;
 import com.restapi.tcms.model.Seance;
 import com.restapi.tcms.model.Stagiaire;
+import com.restapi.tcms.model.StagiaireAbsence;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,18 +33,29 @@ public class PresenceController {
         Seance seance = seanceDao.getById(seanceId).get();
         presenceList.forEach(stagiairePresence -> {
             Stagiaire stagiaire = stagiaireDao.getById(stagiairePresence.id).orElseThrow(()-> new EntityNotFoundException("stagiaire not found"));
-            Presence presence = new Presence(seance, date, stagiaire, stagiairePresence.present);
+            Presence presence = new Presence(seance, date, stagiaire, stagiairePresence.absent);
             presenceDao.create(presence);
         });
     }
 
+    @GetMapping(path = "/elimination/{seanceId}")
+    public List<Stagiaire> getElimineBySeance(@PathVariable(name = "seanceId") Long seanceId){
+
+        return presenceDao.getListeElimineBySeance(seanceId);
+    }
+    @GetMapping(path = "/absences/{seanceId}")
+    public List<StagiaireAbsence> getNbAbsencesBySeance(@PathVariable(name = "seanceId") Long seanceId){
+
+        return presenceDao.getNbAbsencesBySeance(seanceId);
+    }
+
     private static class StagiairePresence {
         long id;
-        boolean present;
+        boolean absent;
 
-        public StagiairePresence(long id, boolean present) {
+        public StagiairePresence(long id, boolean absent) {
             this.id = id;
-            this.present = present;
+            this.absent = absent;
         }
     }
 }

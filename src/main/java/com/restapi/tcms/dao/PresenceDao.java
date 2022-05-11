@@ -1,6 +1,8 @@
 package com.restapi.tcms.dao;
 
 import com.restapi.tcms.model.Presence;
+import com.restapi.tcms.model.Stagiaire;
+import com.restapi.tcms.model.StagiaireAbsence;
 import com.restapi.tcms.repository.PresenceRepository;
 import org.springframework.stereotype.Service;
 
@@ -34,5 +36,13 @@ public class PresenceDao implements Dao<Presence> {
     @Override
     public void delete(Long id) throws EntityNotFoundException {
         Presence presence = presenceRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("presence entity with id" +id+ " not found"));
+    }
+
+    public List<Stagiaire> getListeElimineBySeance(Long idSeance) {
+        return presenceRepository.getEliminatedBySeance(idSeance);
+    }
+    public List<StagiaireAbsence> getNbAbsencesBySeance(Long idSeance) {
+        System.out.println();
+        return presenceRepository.getNbAbsenceBySeance(idSeance);
     }
 }

@@ -27,12 +27,12 @@ public class Presence {
     private Date date;
     @ManyToOne
     private Stagiaire stagiaire;
-    private boolean present;
+    private boolean absent;
 
-    public Presence(Seance seance, Date date, Stagiaire stagiaire, boolean present) {
+    public Presence(Seance seance, Date date, Stagiaire stagiaire, boolean absent) {
         this.seance = seance;
         this.date = date;
         this.stagiaire = stagiaire;
-        this.present = present;
+        this.absent = absent;
     }
 }

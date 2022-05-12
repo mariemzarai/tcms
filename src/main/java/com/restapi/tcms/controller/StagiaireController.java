@@ -2,6 +2,7 @@ package com.restapi.tcms.controller;
 
 import com.restapi.tcms.dao.StagiaireDao;
 import com.restapi.tcms.model.Stagiaire;
+import com.restapi.tcms.service.ServiceAuth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -10,22 +11,27 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/stagiaires")
 public class StagiaireController {
 
     private final StagiaireDao stagiaireDao;
+    private final ServiceAuth serviceAuth;
 
     @Autowired
-    public StagiaireController(StagiaireDao stagiaireDao) {
+    public StagiaireController(StagiaireDao stagiaireDao, ServiceAuth serviceAuth) {
         this.stagiaireDao = stagiaireDao;
+        this.serviceAuth = serviceAuth;
     }
 
     @PostMapping(path = "/ajouter", consumes = "application/json", produces = "application/json")
     public ResponseEntity<Object> create(@RequestBody Stagiaire stagiaire){
         try {
-            return new ResponseEntity<>(stagiaireDao.create(stagiaire), HttpStatus.CREATED);
+            Optional<Stagiaire> stagiaire1 = stagiaireDao.create(stagiaire);
+            stagiaire1.ifPresent(serviceAuth::createIdentityAccount);
+            return new ResponseEntity<>(stagiaire1, HttpStatus.CREATED);
         } catch (DataIntegrityViolationException e) {
             return ResponseEntity.badRequest().body(e.toString());
         }

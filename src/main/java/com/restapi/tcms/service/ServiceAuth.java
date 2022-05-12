@@ -5,6 +5,7 @@ import com.restapi.tcms.model.Personne;
 import com.restapi.tcms.security.Role;
 import com.restapi.tcms.security.Utilisateur;
 import com.restapi.tcms.security.UtilisateurDao;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -36,5 +37,9 @@ public class ServiceAuth {
         else
             return null;
         return utilisateur.getIdentite();
+    }
+
+    public String getAuthenticatedUserRole(){
+        return SecurityContextHolder.getContext().getAuthentication().getAuthorities().toArray(new GrantedAuthority[0])[0].getAuthority();
     }
 }

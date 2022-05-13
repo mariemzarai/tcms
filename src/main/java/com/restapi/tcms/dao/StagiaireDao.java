@@ -1,10 +1,10 @@
 package com.restapi.tcms.dao;
 
+import com.restapi.tcms.service.ServiceAuth;
 import com.restapi.tcms.model.Stagiaire;
 import com.restapi.tcms.repository.StagiaireRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -16,8 +16,11 @@ import java.util.Optional;
 public class StagiaireDao implements Dao<Stagiaire> {
 
     private final StagiaireRepository stagiaireRepository;
+    private final ServiceAuth serviceAuth;
     @Autowired
-    public  StagiaireDao(StagiaireRepository stagiaireRepository){this.stagiaireRepository=stagiaireRepository;}
+    public  StagiaireDao(StagiaireRepository stagiaireRepository, ServiceAuth serviceAuth){this.stagiaireRepository=stagiaireRepository;
+        this.serviceAuth = serviceAuth;
+    }
 
     @Override
     public Optional<Stagiaire> getById(Long id){
@@ -25,8 +28,11 @@ public class StagiaireDao implements Dao<Stagiaire> {
     }
     @Override
     public Optional<Stagiaire> create(Stagiaire stagiaire) {
-        if(!stagiaireRepository.existsByEmail(stagiaire.getEmail()))
-            return Optional.of(stagiaireRepository.save(stagiaire));
+        if(!stagiaireRepository.existsByEmail(stagiaire.getEmail())) {
+            Optional<Stagiaire> opStagiaire = Optional.of(stagiaireRepository.save(stagiaire));
+            opStagiaire.ifPresent(serviceAuth::createIdentityAccount);
+            return  opStagiaire;
+        }
         else
             throw new DataIntegrityViolationException("email taken");
     }

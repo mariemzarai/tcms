@@ -1,5 +1,6 @@
 package com.restapi.tcms.dao;
 import com.restapi.tcms.model.Groupe;
+import com.restapi.tcms.model.Stagiaire;
 import com.restapi.tcms.repository.GroupeRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -44,6 +45,10 @@ public class GroupeDao implements Dao<Groupe> {
         else throw new EntityNotFoundException();
     }
 
+    public List<Stagiaire> getStagiairesOfGroupe(Long id){
+        Groupe groupe = groupeRepository.getById(id);
+        return groupe.getStagiaires();
+    }
 
     public long countAll() {
         return groupeRepository.count();

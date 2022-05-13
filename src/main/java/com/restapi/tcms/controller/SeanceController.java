@@ -2,6 +2,8 @@ package com.restapi.tcms.controller;
 
 import com.restapi.tcms.dao.SeanceDao;
 import com.restapi.tcms.model.Seance;
+import com.restapi.tcms.model.Stagiaire;
+import com.restapi.tcms.service.ServiceAbsence;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -9,17 +11,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
-import java.nio.file.Path;
 import java.util.List;
 
 @RestController
 @RequestMapping(path = "/seance")
 public class SeanceController {
     private final SeanceDao seanceDao;
+    private final ServiceAbsence serviceAbsence;
 
     @Autowired
-    public SeanceController(SeanceDao seanceDao) {
+    public SeanceController(SeanceDao seanceDao, ServiceAbsence serviceAbsence) {
         this.seanceDao = seanceDao;
+        this.serviceAbsence = serviceAbsence;
     }
 
     @GetMapping(path = "/{id}")
@@ -29,6 +32,11 @@ public class SeanceController {
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping(path = "/{id}/stagiaires")
+    public List<Stagiaire> getStagiaires(@PathVariable("id") Long id){
+        return serviceAbsence.getStagiairesFromSeance(id);
     }
 
     @PostMapping(path = "/ajouter", consumes = "application/json", produces = "application/json")

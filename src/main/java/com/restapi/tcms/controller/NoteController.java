@@ -2,6 +2,8 @@ package com.restapi.tcms.controller;
 
 import com.restapi.tcms.dao.NoteDao;
 import com.restapi.tcms.model.Note;
+import com.restapi.tcms.model.NoteExamListeNotes;
+import com.restapi.tcms.service.ServiceNotes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +17,12 @@ import java.util.Optional;
 @RequestMapping(path = "/note")
 public class NoteController {
     private final NoteDao noteDao;
+    private final ServiceNotes serviceNotes;
 
     @Autowired
-    public NoteController(NoteDao noteDao) {
+    public NoteController(NoteDao noteDao, ServiceNotes serviceNotes) {
         this.noteDao = noteDao;
+        this.serviceNotes = serviceNotes;
     }
 
     @GetMapping(path = "/{id}")
@@ -37,6 +41,12 @@ public class NoteController {
             return new ResponseEntity<>(newNote.get(), HttpStatus.CREATED);
         else
             return ResponseEntity.badRequest().build();
+    }
+
+    @PostMapping(path = "/ajouterListe/{seanceId}", consumes = "application/json", produces = "application/json")
+    public void ajouterListeDeNotes(@RequestBody NoteExamListeNotes noteExamListeNotes, @PathVariable(name = "seanceId") Long seanceId){
+        //TODO change type examen
+        serviceNotes.ajouterNotes(seanceId, noteExamListeNotes.getTypeExam(), noteExamListeNotes.getListeNotes());
     }
 
     @GetMapping(path = "/tous")

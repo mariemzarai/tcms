@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/matieres")
+@RequestMapping(path = "/me")
 public class StagiaireUtilisateurController {
     private final ServiceStagiaire serviceStagiaire;
     private final ServiceAuth serviceAuth;
@@ -22,12 +22,17 @@ public class StagiaireUtilisateurController {
         this.serviceAuth = serviceAuth;
     }
 
-    @GetMapping(path = "/")
+    @GetMapping(path = "/matieres")
     public List<MatiereNoteAbsences> getMatiereNotesAbsenceOfAuthentificatedStagiaire(){
         Personne user = serviceAuth.getAuthenticatedUser();
         if(!(user instanceof Stagiaire))
             return null;
         List<MatiereNoteAbsences> listeMatiereNoteAbsences = serviceStagiaire.getListeMatiereNoteAbsences((Stagiaire) user);
         return listeMatiereNoteAbsences;
+    }
+
+    @GetMapping(path = "/")
+    public Stagiaire getAUthentificatedStagiaire(){
+        return (Stagiaire) serviceAuth.getAuthenticatedUser();
     }
 }

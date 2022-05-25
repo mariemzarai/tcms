@@ -1,7 +1,7 @@
 package com.restapi.tcms.dao;
 
-import com.restapi.tcms.model.Admin;
-import com.restapi.tcms.repository.AdminRepository;
+import com.restapi.tcms.model.ServiceStagiaire;
+import com.restapi.tcms.repository.ServiceStagiaireRepository;
 import com.restapi.tcms.service.ServiceAuth;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -12,29 +12,29 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AdminDao implements Dao<Admin> {
-    private final AdminRepository adminRepository;
+public class ServiceStagiaireDao implements Dao<ServiceStagiaire> {
+    private final ServiceStagiaireRepository serviceStagiaireRepository;
     private final ServiceAuth serviceAuth;
 
-    public AdminDao(AdminRepository adminRepository, ServiceAuth serviceAuth) {
-        this.adminRepository = adminRepository;
+    public ServiceStagiaireDao(ServiceStagiaireRepository serviceStagiaireRepository, ServiceAuth serviceAuth) {
+        this.serviceStagiaireRepository = serviceStagiaireRepository;
         this.serviceAuth = serviceAuth;
     }
 
     @Override
-    public Optional<Admin> getById(Long id) {
-        return adminRepository.findById(id);
+    public Optional<ServiceStagiaire> getById(Long id) {
+        return serviceStagiaireRepository.findById(id);
     }
 
     @Override
-    public List<Admin> getAll() {
-        return adminRepository.findAll();
+    public List<ServiceStagiaire> getAll() {
+        return serviceStagiaireRepository.findAll();
     }
 
     @Override
-    public Optional<Admin> create(Admin admin) {
+    public Optional<ServiceStagiaire> create(ServiceStagiaire serviceStagiaire) {
         try {
-            Admin save = adminRepository.save(admin);
+            ServiceStagiaire save = serviceStagiaireRepository.save(serviceStagiaire);
             serviceAuth.createIdentityAccount(save);
             return Optional.of(save);
         } catch (DataIntegrityViolationException | ConstraintViolationException e) {
@@ -45,6 +45,6 @@ public class AdminDao implements Dao<Admin> {
 
     @Override
     public void delete(Long id) throws EntityNotFoundException {
-        adminRepository.deleteById(id);
+        serviceStagiaireRepository.deleteById(id);
     }
 }

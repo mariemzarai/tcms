@@ -1,7 +1,7 @@
 package com.restapi.tcms.dao;
 
-import com.restapi.tcms.model.Admin;
-import com.restapi.tcms.repository.AdminRepository;
+import com.restapi.tcms.model.ServiceScolarite;
+import com.restapi.tcms.repository.ServiceScolariteRepository;
 import com.restapi.tcms.service.ServiceAuth;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -12,29 +12,29 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AdminDao implements Dao<Admin> {
-    private final AdminRepository adminRepository;
+public class ServiceScolariteDao implements Dao<ServiceScolarite>{
+    private final ServiceScolariteRepository serviceScolariteRepository;
     private final ServiceAuth serviceAuth;
 
-    public AdminDao(AdminRepository adminRepository, ServiceAuth serviceAuth) {
-        this.adminRepository = adminRepository;
+    public ServiceScolariteDao(ServiceScolariteRepository serviceScolariteRepository, ServiceAuth serviceAuth) {
+        this.serviceScolariteRepository = serviceScolariteRepository;
         this.serviceAuth = serviceAuth;
     }
 
     @Override
-    public Optional<Admin> getById(Long id) {
-        return adminRepository.findById(id);
+    public Optional<ServiceScolarite> getById(Long id) {
+        return serviceScolariteRepository.findById(id);
     }
 
     @Override
-    public List<Admin> getAll() {
-        return adminRepository.findAll();
+    public List<ServiceScolarite> getAll() {
+        return serviceScolariteRepository.findAll();
     }
 
     @Override
-    public Optional<Admin> create(Admin admin) {
+    public Optional<ServiceScolarite> create(ServiceScolarite serviceScolarite) {
         try {
-            Admin save = adminRepository.save(admin);
+            ServiceScolarite save = serviceScolariteRepository.save(serviceScolarite);
             serviceAuth.createIdentityAccount(save);
             return Optional.of(save);
         } catch (DataIntegrityViolationException | ConstraintViolationException e) {
@@ -45,6 +45,6 @@ public class AdminDao implements Dao<Admin> {
 
     @Override
     public void delete(Long id) throws EntityNotFoundException {
-        adminRepository.deleteById(id);
+        serviceScolariteRepository.deleteById(id);
     }
 }

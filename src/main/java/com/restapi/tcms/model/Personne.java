@@ -34,6 +34,13 @@ public abstract class Personne {
         this.email = email;
     }
 
+    public Personne(String nom, String prenom, String email, String num_tel) {
+        this.nom = nom;
+        this.prenom = prenom;
+        this.email = email;
+        this.num_tel = num_tel;
+    }
+
     public Personne() {
     }
 

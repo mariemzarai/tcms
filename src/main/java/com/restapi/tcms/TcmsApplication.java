@@ -1,5 +1,8 @@
 package com.restapi.tcms;
 
+import com.restapi.tcms.dao.AdminDao;
+import com.restapi.tcms.model.Admin;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -19,4 +22,12 @@ public class TcmsApplication {
 	PasswordEncoder passwordEncoder(){
 		return new BCryptPasswordEncoder();
 	}
+
+//	@Bean
+//	CommandLineRunner run(AdminDao adminDao){
+//		return args -> {
+//			Admin admin = new Admin("mejri", "yassine", "admin@admin.com", "99999999");
+//			adminDao.create(admin);
+//		};
+//	}
 }

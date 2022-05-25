@@ -3,9 +3,8 @@ package com.restapi.tcms.dao;
 import com.restapi.tcms.model.Matiere;
 import com.restapi.tcms.repository.MatiereRepository;
 import com.restapi.tcms.repository.SpecialiteRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.restapi.tcms.service.ServiceHistorique;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -16,16 +15,25 @@ import java.util.Optional;
 
 @Service
 public class MatiereDao implements Dao<Matiere> {
-    @Autowired
-    private MatiereRepository matiereRepository;
-    @Autowired
-    private SpecialiteRepository specialiteRepository;
+    private final MatiereRepository matiereRepository;
+    private final SpecialiteRepository specialiteRepository;
+    private final ServiceHistorique serviceHistorique;
+
+    public MatiereDao(MatiereRepository matiereRepository, SpecialiteRepository specialiteRepository, ServiceHistorique serviceHistorique) {
+        this.matiereRepository = matiereRepository;
+        this.specialiteRepository = specialiteRepository;
+        this.serviceHistorique = serviceHistorique;
+    }
+
     @Override
     public Optional<Matiere> create(Matiere matiere){
         if(matiere.getNom() == null || matiere.getNom().length() == 0)
             throw new DataIntegrityViolationException("nom_de_matiere_ne_peut_pas_etre_vide");
-        if(!matiereRepository.existsByNom(matiere.getNom()))
-            return Optional.of(matiereRepository.save(matiere));
+        if(!matiereRepository.existsByNom(matiere.getNom())) {
+            Matiere save = matiereRepository.save(matiere);
+            serviceHistorique.enregistrerHistorique("creation d'une nouvelle matiere: " + save.getNom() + " pour " + save.getSpecialite().getTitre());
+            return Optional.of(save);
+        }
         else
             throw new DataIntegrityViolationException("matiere_avec_ce_nom_existe");
     }
@@ -38,8 +46,10 @@ public class MatiereDao implements Dao<Matiere> {
     }
     @Override
     public void delete(Long id) throws EntityNotFoundException {
-        if(matiereRepository.existsById(id))
+        if(matiereRepository.existsById(id)) {
             matiereRepository.deleteById(id);
+            serviceHistorique.enregistrerHistorique("suppression de la matière avec l'id: " + id);
+        }
         else throw new EntityNotFoundException();
     }
 

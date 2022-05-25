@@ -2,6 +2,7 @@ package com.restapi.tcms.dao;
 
 import com.restapi.tcms.model.Seance;
 import com.restapi.tcms.repository.SeanceRepository;
+import com.restapi.tcms.service.ServiceHistorique;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,10 +13,11 @@ import java.util.Optional;
 @Service
 public class SeanceDao implements Dao<Seance>{
     private final SeanceRepository seanceRepository;
-
+    private final ServiceHistorique serviceHistorique;
     @Autowired
-    public SeanceDao(SeanceRepository seanceRepository) {
+    public SeanceDao(SeanceRepository seanceRepository, ServiceHistorique serviceHistorique) {
         this.seanceRepository = seanceRepository;
+        this.serviceHistorique = serviceHistorique;
     }
 
     @Override
@@ -30,13 +32,17 @@ public class SeanceDao implements Dao<Seance>{
 
     @Override
     public Optional<Seance> create(Seance seance) {
-        return Optional.of(seanceRepository.save(seance));
+        Seance save = seanceRepository.save(seance);
+        serviceHistorique.enregistrerHistorique("creation d'une nouvelle seance: " + save.getFormateur().getNom() + " " + save.getFormateur().getPrenom() + " enseigne " + save.getMatiere().getNom() + " à " + save.getGroupe() + " : " + save.getGroupe().getSpecialite().getTitre());
+        return Optional.of(save);
     }
 
     @Override
     public void delete(Long id) throws EntityNotFoundException {
-        if(seanceRepository.existsById(id))
+        if(seanceRepository.existsById(id)) {
             seanceRepository.deleteById(id);
+            serviceHistorique.enregistrerHistorique("suppression de la seance avec id " + id);
+        }
         else throw new EntityNotFoundException();
     }
 

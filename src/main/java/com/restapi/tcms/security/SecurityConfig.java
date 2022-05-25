@@ -40,8 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests().antMatchers("/login").permitAll();
-        http.authorizeRequests().antMatchers( "/formateur/stat").authenticated();
-        http.authorizeRequests().antMatchers( "/formateur/**").hasAnyAuthority(Role.ROLE_FORMATEUR.getAuthority());
+        http.authorizeRequests().antMatchers( "/admin/**").hasAnyAuthority(Role.ROLE_ADMINISTRATEUR.getAuthority());
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);

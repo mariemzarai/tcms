@@ -1,15 +1,17 @@
 package com.restapi.tcms.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
+@ToString
 public class Note {
     @Id
     @SequenceGenerator(
@@ -33,5 +35,18 @@ public class Note {
         this.type = type;
         this.stagiaire = stagiaire;
         this.matiere = matiere;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Note note = (Note) o;
+        return id != null && Objects.equals(id, note.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

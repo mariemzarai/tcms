@@ -2,6 +2,7 @@ package com.restapi.tcms.service;
 
 import com.restapi.tcms.model.Formateur;
 import com.restapi.tcms.model.Personne;
+import com.restapi.tcms.model.Stagiaire;
 import com.restapi.tcms.security.Role;
 import com.restapi.tcms.security.Utilisateur;
 import com.restapi.tcms.security.UtilisateurDao;
@@ -20,7 +21,7 @@ public class ServiceAuth {
     }
 
     public boolean createIdentityAccount(Personne p){
-        Role role = (p instanceof Formateur? Role.ROLE_FORMATEUR: Role.ROLE_STAGIAIRE);
+        Role role = (p instanceof Formateur? Role.ROLE_FORMATEUR: p instanceof Stagiaire ?Role.ROLE_STAGIAIRE: Role.ROLE_ADMINISTRATEUR);
         Optional<Utilisateur> OpUtilisateur =
                 utilisateurDao.create(new Utilisateur(null, p.getEmail(), p.getNum_tel(), role, p));
         return OpUtilisateur.isPresent();

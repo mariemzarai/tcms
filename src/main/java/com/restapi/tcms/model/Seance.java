@@ -1,18 +1,18 @@
 package com.restapi.tcms.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
-@Data
+@Getter
+@Setter
+@RequiredArgsConstructor
 @AllArgsConstructor
-@NoArgsConstructor
 public class Seance {
     @Id
     @SequenceGenerator(
@@ -32,5 +32,24 @@ public class Seance {
     private Matiere matiere;
     @OneToMany(mappedBy = "seance")
     @JsonIgnore
+    @ToString.Exclude
     private List<Presence> presenceList;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Seance seance = (Seance) o;
+        return id != null && Objects.equals(id, seance.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Seance{" + "id=" + id + '}';
+    }
 }

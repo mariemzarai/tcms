@@ -15,4 +15,6 @@ public interface PresenceRepository extends JpaRepository<Presence, Long> {
     List<Stagiaire> getEliminatedBySeance(Long id);
     @Query("SELECT new com.restapi.tcms.model.StagiaireAbsence(p.stagiaire.id, count(*)) FROM Presence p where p.seance.id=?1 AND p.absent=1 group by p.stagiaire")
     List<StagiaireAbsence> getNbAbsenceBySeance(Long id);
+    @Query("SELECT p FROM Presence p WHERE p.seance.id=?1")
+    List<Presence> getAllBySeanceId(Long id);
 }

@@ -2,6 +2,7 @@ package com.restapi.tcms.dao;
 import com.restapi.tcms.service.ServiceAuth;
 import com.restapi.tcms.model.Formateur;
 import com.restapi.tcms.repository.FormateurRepository;
+import com.restapi.tcms.service.ServiceHistorique;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -15,11 +16,13 @@ import java.util.*;
 public class FormateurDao implements Dao<Formateur>{
     private final FormateurRepository formateurRepository;
     private final ServiceAuth serviceAuth;
+    private final ServiceHistorique serviceHistorique;
     @Autowired
-    public FormateurDao(FormateurRepository formateurRepository, ServiceAuth serviceAuth)
+    public FormateurDao(FormateurRepository formateurRepository, ServiceAuth serviceAuth, ServiceHistorique serviceHistorique)
     {
         this.formateurRepository=formateurRepository;
         this.serviceAuth = serviceAuth;
+        this.serviceHistorique = serviceHistorique;
     }
 
     @Override
@@ -37,6 +40,7 @@ public class FormateurDao implements Dao<Formateur>{
         if(!formateurRepository.existsByEmail(formateur.getEmail())) {
             Optional<Formateur> opFormateur =  Optional.of(formateurRepository.save(formateur));
             opFormateur.ifPresent(serviceAuth::createIdentityAccount);
+            serviceHistorique.enregistrerHistorique("creation d'un nouveau formateur: " + formateur.getNom() + " " + formateur.getPrenom());
             return opFormateur;
         }
         else
@@ -45,8 +49,10 @@ public class FormateurDao implements Dao<Formateur>{
 
     @Override
     public void delete(Long id) throws EntityNotFoundException {
-        if(formateurRepository.existsById(id))
+        if(formateurRepository.existsById(id)) {
             formateurRepository.deleteById(id);
+            serviceHistorique.enregistrerHistorique("suppression du formateur avec id: " + id);
+        }
         else throw new EntityNotFoundException();
     }
 

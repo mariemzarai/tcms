@@ -42,7 +42,10 @@ public class PresenceDao implements Dao<Presence> {
         return presenceRepository.getEliminatedBySeance(idSeance);
     }
     public List<StagiaireAbsence> getNbAbsencesBySeance(Long idSeance) {
-        System.out.println();
         return presenceRepository.getNbAbsenceBySeance(idSeance);
+    }
+
+    public List<Presence> getAllPresencesBySeance(Long idSeance){
+        return presenceRepository.getAllBySeanceId(idSeance);
     }
 }

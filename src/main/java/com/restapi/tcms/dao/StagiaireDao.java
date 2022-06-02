@@ -3,6 +3,7 @@ package com.restapi.tcms.dao;
 import com.restapi.tcms.service.ServiceAuth;
 import com.restapi.tcms.model.Stagiaire;
 import com.restapi.tcms.repository.StagiaireRepository;
+import com.restapi.tcms.service.ServiceHistorique;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -17,9 +18,11 @@ public class StagiaireDao implements Dao<Stagiaire> {
 
     private final StagiaireRepository stagiaireRepository;
     private final ServiceAuth serviceAuth;
+    private final ServiceHistorique serviceHistorique;
     @Autowired
-    public  StagiaireDao(StagiaireRepository stagiaireRepository, ServiceAuth serviceAuth){this.stagiaireRepository=stagiaireRepository;
+    public  StagiaireDao(StagiaireRepository stagiaireRepository, ServiceAuth serviceAuth, ServiceHistorique serviceHistorique){this.stagiaireRepository=stagiaireRepository;
         this.serviceAuth = serviceAuth;
+        this.serviceHistorique = serviceHistorique;
     }
 
     @Override
@@ -31,6 +34,7 @@ public class StagiaireDao implements Dao<Stagiaire> {
         if(!stagiaireRepository.existsByEmail(stagiaire.getEmail())) {
             Optional<Stagiaire> opStagiaire = Optional.of(stagiaireRepository.save(stagiaire));
             opStagiaire.ifPresent(serviceAuth::createIdentityAccount);
+            serviceHistorique.enregistrerHistorique("creation d'un nouveau stagiaire: " + stagiaire.getNom() + " " + stagiaire.getPrenom());
             return  opStagiaire;
         }
         else
@@ -38,8 +42,10 @@ public class StagiaireDao implements Dao<Stagiaire> {
     }
     @Override
     public void delete(Long id) throws EntityNotFoundException{
-        if(stagiaireRepository.existsById(id))
+        if(stagiaireRepository.existsById(id)) {
             stagiaireRepository.deleteById(id);
+            serviceHistorique.enregistrerHistorique("suppression du stagiaire avec l'id: " + id);
+        }
         else throw new EntityNotFoundException();
     }
 

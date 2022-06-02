@@ -45,7 +45,6 @@ public class NoteController {
 
     @PostMapping(path = "/ajouterListe/{seanceId}", consumes = "application/json", produces = "application/json")
     public void ajouterListeDeNotes(@RequestBody NoteExamListeNotes noteExamListeNotes, @PathVariable(name = "seanceId") Long seanceId){
-        //TODO change type examen
         serviceNotes.ajouterNotes(seanceId, noteExamListeNotes.getTypeExam(), noteExamListeNotes.getListeNotes());
     }
 
